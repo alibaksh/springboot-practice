@@ -3,10 +3,14 @@ package com.springbootpractice.restservices.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,9 +25,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.springbootpractice.restservices.entities.User;
 import com.springbootpractice.restservices.exceptions.AlreadyExistsException;
 import com.springbootpractice.restservices.exceptions.UserNotFoundException;
+import com.springbootpractice.restservices.exceptions.UsernameNotFoundException;
 import com.springbootpractice.restservices.services.UserService;
 
 @RestController
+@Validated
 public class UserController {
 
 	@Autowired
@@ -35,7 +41,7 @@ public class UserController {
 	}
 
 	@PostMapping(path = "/users")
-	public ResponseEntity<Void> createUser(@RequestBody User user, UriComponentsBuilder builder) {
+	public ResponseEntity<Void> createUser(@Valid @RequestBody User user, UriComponentsBuilder builder) {
 		try {
 			userService.createUser(user);
 			HttpHeaders headers = new HttpHeaders();
@@ -48,7 +54,7 @@ public class UserController {
 	}
 
 	@GetMapping(path = "/users/{id}")
-	public Optional<User> getUserById(@PathVariable Long id) {
+	public Optional<User> getUserById(@PathVariable @Min(1) Long id) {
 		try {
 			return userService.getUserById(id);
 		} catch (UserNotFoundException e) {
@@ -57,7 +63,7 @@ public class UserController {
 	}
 
 	@PutMapping(path = "/users/{id}")
-	public User createUser(@PathVariable Long id, @RequestBody User user) {
+	public User updateUser(@PathVariable Long id, @RequestBody User user) {
 		try {
 			return userService.updateUserById(id, user);
 		} catch (UserNotFoundException e) {
@@ -71,7 +77,11 @@ public class UserController {
 	}
 
 	@GetMapping(path = "/users/username")
-	public User getUserById(@RequestParam String username) {
-		return userService.getUserByUsername(username);
+	public User getUserById(@RequestParam String username) throws UsernameNotFoundException {
+		User user = userService.getUserByUsername(username);
+		if (user == null) {
+			throw new UsernameNotFoundException("User doesn't exist, please provide valid username");
+		}
+		return user;
 	}
 }

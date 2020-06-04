@@ -11,6 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.springbootpractice.restservices.entities.User;
 import com.springbootpractice.restservices.exceptions.AlreadyExistsException;
 import com.springbootpractice.restservices.exceptions.UserNotFoundException;
+import com.springbootpractice.restservices.exceptions.UsernameNotFoundException;
 import com.springbootpractice.restservices.repositories.UserRepository;
 
 @Service
@@ -30,7 +31,7 @@ public class UserService {
 		if (existingUser != null) {
 			throw new AlreadyExistsException("User with same username already exisits");
 		}
-		
+
 		return userRepository.save(user);
 	}
 
@@ -61,7 +62,7 @@ public class UserService {
 		userRepository.deleteById(id);
 	}
 
-	public User getUserByUsername(String username) {
+	public User getUserByUsername(String username) throws UsernameNotFoundException {
 		return userRepository.findByUsername(username);
 	}
 }
