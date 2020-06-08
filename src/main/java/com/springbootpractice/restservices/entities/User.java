@@ -14,9 +14,11 @@ import javax.validation.constraints.Size;
 import org.springframework.hateoas.RepresentationModel;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Table(name = "users")
 @Entity
+@JsonIgnoreProperties({"firstName", "lasttName"})
 public class User extends RepresentationModel<User>{
 
 	@Id
@@ -41,6 +43,7 @@ public class User extends RepresentationModel<User>{
 	private String role;
 
 	@Column(name = "ssn", length = 50, nullable = false, unique = true)
+	@JsonIgnore
 	private String ssn;
 
 	@OneToMany(mappedBy = "user")
