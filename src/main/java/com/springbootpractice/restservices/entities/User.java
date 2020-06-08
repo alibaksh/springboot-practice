@@ -13,13 +13,14 @@ import javax.validation.constraints.Size;
 
 import org.springframework.hateoas.RepresentationModel;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Table(name = "users")
 @Entity
-@JsonIgnoreProperties({"firstName", "lasttName"})
-public class User extends RepresentationModel<User>{
+//@JsonIgnoreProperties({"firstName", "lasttName"}) This is part of static filtering
+@JsonFilter(value = "userFilter")
+public class User extends RepresentationModel<User> {
 
 	@Id
 	@GeneratedValue
@@ -34,7 +35,7 @@ public class User extends RepresentationModel<User>{
 	private String firstName;
 
 	@Column(name = "last_name", nullable = false)
-	private String lasttName;
+	private String lastName;
 
 	@Column(name = "email", nullable = false)
 	private String email;
@@ -43,7 +44,7 @@ public class User extends RepresentationModel<User>{
 	private String role;
 
 	@Column(name = "ssn", length = 50, nullable = false, unique = true)
-	@JsonIgnore
+//	@JsonIgnore  This is part of static filtering
 	private String ssn;
 
 	@OneToMany(mappedBy = "user")
@@ -54,12 +55,12 @@ public class User extends RepresentationModel<User>{
 
 	}
 
-	public User(Long id, String username, String firstName, String lasttName, String email, String role, String ssn) {
+	public User(Long id, String username, String firstName, String lastName, String email, String role, String ssn) {
 		super();
 		this.id = id;
 		this.username = username;
 		this.firstName = firstName;
-		this.lasttName = lasttName;
+		this.lastName = lastName;
 		this.email = email;
 		this.role = role;
 		this.ssn = ssn;
@@ -89,12 +90,12 @@ public class User extends RepresentationModel<User>{
 		this.firstName = firstName;
 	}
 
-	public String getLasttName() {
-		return lasttName;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setLasttName(String lasttName) {
-		this.lasttName = lasttName;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public String getEmail() {
@@ -131,7 +132,7 @@ public class User extends RepresentationModel<User>{
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", firstName=" + firstName + ", lasttName=" + lasttName
+		return "User [id=" + id + ", username=" + username + ", firstName=" + firstName + ", lasttName=" + lastName
 				+ ", email=" + email + ", role=" + role + ", ssn=" + ssn + "]";
 	}
 }
