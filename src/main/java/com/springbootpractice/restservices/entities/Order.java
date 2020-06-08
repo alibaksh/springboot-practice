@@ -9,9 +9,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 
 @Table(name = "orders")
 @Entity
+@JsonView(Views.Internal.class)
 public class Order {
 
 	@Id
