@@ -1,4 +1,10 @@
-insert into user values(101, 'ali@example.com', 'Ali', 'Mehmood', 'admin', 'ssn101', 'alibaksh');
-insert into user values(102, 'kreddy@example.com', 'Kalyan', 'Reddy', 'admin', 'ssn102', 'kreddy');
-insert into user values(103, 'gwiser@example.com', 'Greg', 'Wiser', 'admin', 'ssn103', 'gwiser');
-insert into user values(104, 'dmark@example.com', 'David', 'Mark', 'admin', 'ssn104', 'dmark'); 
+insert into users values(101, 'ali@example.com', 'Ali', 'Mehmood', 'admin', 'ssn101', 'alibaksh');
+insert into users values(102, 'kreddy@example.com', 'Kalyan', 'Reddy', 'admin', 'ssn102', 'kreddy');
+insert into users values(103, 'gwiser@example.com', 'Greg', 'Wiser', 'admin', 'ssn103', 'gwiser');
+insert into users values(104, 'dmark@example.com', 'David', 'Mark', 'admin', 'ssn104', 'dmark'); 
+insert into orders values( 2001, 'order11', 101);        
+insert into orders values( 2002, 'order12', 101);
+insert into orders values( 2003, 'order13', 101);
+insert into orders values( 2004, 'order21', 102);
+insert into orders values( 2005, 'order22', 102);
+insert into orders values( 2006, 'order31', 103);

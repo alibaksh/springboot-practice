@@ -21,7 +21,8 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 		CustomErrorDetails customErrorDetails = new CustomErrorDetails(new Date(),
-				"From MethodArgumentNotValid Exception in GEH", ex.getLocalizedMessage(), HttpStatus.BAD_REQUEST.value());
+				"From MethodArgumentNotValid Exception in GEH", ex.getLocalizedMessage(),
+				HttpStatus.BAD_REQUEST.value());
 
 		return new ResponseEntity<Object>(customErrorDetails, HttpStatus.BAD_REQUEST);
 	}
@@ -51,5 +52,22 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
 				request.getDescription(false), HttpStatus.BAD_REQUEST.value());
 
 		return new ResponseEntity<Object>(customErrorDetails, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(UserNotFoundException.class)
+	public ResponseEntity<Object> handleConstraintViolationException(UserNotFoundException ex, WebRequest request) {
+		CustomErrorDetails customErrorDetails = new CustomErrorDetails(new Date(), ex.getLocalizedMessage(),
+				request.getDescription(false), HttpStatus.NOT_FOUND.value());
+
+		return new ResponseEntity<Object>(customErrorDetails, HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(NotFoundException.class)
+	public ResponseEntity<Object> handleConstraintViolationException(NotFoundException ex, WebRequest request) {
+		CustomErrorDetails customErrorDetails = new CustomErrorDetails(new Date(),
+				ex.getLocalizedMessage() + " doesn't exist, please provide valid id", request.getDescription(false),
+				HttpStatus.NOT_FOUND.value());
+
+		return new ResponseEntity<Object>(customErrorDetails, HttpStatus.NOT_FOUND);
 	}
 }
