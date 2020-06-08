@@ -11,11 +11,13 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Table(name = "users")
 @Entity
-public class User {
+public class User extends RepresentationModel<User>{
 
 	@Id
 	@GeneratedValue
