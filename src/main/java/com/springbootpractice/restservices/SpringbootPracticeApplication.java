@@ -32,4 +32,9 @@ public class SpringbootPracticeApplication {
 
 		return messageSource;
 	}
+	
+	
+	//------------Actuator Endpoints----------
+	//http://localhost:8080/actuator
+	//http://localhost:8080/actuator/health/
 }
