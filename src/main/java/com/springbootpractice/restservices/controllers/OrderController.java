@@ -19,7 +19,7 @@ import com.springbootpractice.restservices.repositories.UserRepository;
 import com.springbootpractice.restservices.services.OrderService;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/users/{userId}")
 public class OrderController {
 
 	@Autowired
@@ -28,7 +28,7 @@ public class OrderController {
 	@Autowired
 	private OrderService orderService;
 
-	@GetMapping("/{userId}/orders")
+	@GetMapping("/orders")
 	public List<Order> getAllOrdersByUserId(@PathVariable Long userId) throws UserNotFoundException {
 		Optional<User> user = userRepository.findById(userId);
 		if (!user.isPresent()) {
@@ -38,7 +38,7 @@ public class OrderController {
 		return user.get().getOrders();
 	}
 
-	@PostMapping("/{userId}/orders")
+	@PostMapping("/orders")
 	public Order createOrder(@PathVariable Long userId, @RequestBody Order order) throws UserNotFoundException {
 		Optional<User> user = userRepository.findById(userId);
 		if (!user.isPresent()) {
@@ -47,15 +47,15 @@ public class OrderController {
 		order.setUser(user.get());
 		return orderService.createOrder(order);
 	}
-	
-	@GetMapping("/{userId}/orders/{orderId}")
+
+	@GetMapping("/orders/{orderId}")
 	public Order getOrderById(@PathVariable Long orderId) throws NotFoundException {
-		
+
 		Optional<Order> order = orderService.getOrderById(orderId);
 		if (!order.isPresent()) {
 			throw new NotFoundException("Order");
 		}
-		
+
 		return order.get();
 	}
 }

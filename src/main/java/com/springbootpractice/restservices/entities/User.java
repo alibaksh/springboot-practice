@@ -15,20 +15,26 @@ import org.springframework.hateoas.RepresentationModel;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 @Table(name = "users")
 @Entity
 //@JsonIgnoreProperties({"firstName", "lasttName"}) This is part of static filtering
 //@JsonFilter(value = "userFilter") Used for Mapping Jackson value filtering
+@ApiModel(description = "This Model is to create a user")
 public class User extends RepresentationModel<User> {
 
 	@Id
 	@GeneratedValue
 	@JsonView(Views.External.class)
+	@ApiModelProperty(notes = "Auto generated unique id", required = true, position = 1)
 	private Long id;
 
 	@NotEmpty(message = "Username is mandatory, please provide valid username.")
 	@Column(name = "user_name", length = 50, nullable = false, unique = true)
 	@JsonView(Views.External.class)
+	@ApiModelProperty(notes = "Username should be unique", example = "alim", required = true, position = 2)
 	private String username;
 
 	@Size(min = 2, message = "First name should have at least 2 characters.")

@@ -1,7 +1,6 @@
 package com.springbootpractice.restservices.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -9,6 +8,7 @@ import javax.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,21 +29,30 @@ import com.springbootpractice.restservices.exceptions.UserNotFoundException;
 import com.springbootpractice.restservices.exceptions.UsernameNotFoundException;
 import com.springbootpractice.restservices.services.UserService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 @RestController
 @Validated
 @RequestMapping("/users")
+@Api(tags = "User management RESTful services", value = "UserController", description = "Controller used for User management")
 public class UserController {
 
 	@Autowired
 	private UserService userService;
 
-	@GetMapping
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Retreive List of users")
 	public List<User> getAllUsers() {
 		return userService.getAllUsers();
 	}
 
 	@PostMapping
-	public ResponseEntity<Void> createUser(@Valid @RequestBody User user, UriComponentsBuilder builder) {
+	@ApiOperation(value = "Create new user")
+	public ResponseEntity<Void> createUser(
+			@ApiParam("User info to be used for creating a user") @Valid @RequestBody User user,
+			UriComponentsBuilder builder) {
 		try {
 			userService.createUser(user);
 			HttpHeaders headers = new HttpHeaders();
@@ -56,9 +65,9 @@ public class UserController {
 	}
 
 	@GetMapping(path = "/{id}")
-	public Optional<User> getUserById(@PathVariable @Min(1) Long id) {
+	public User getUserById(@PathVariable @Min(1) Long id) {
 		try {
-			return userService.getUserById(id);
+			return userService.getUserById(id).get();
 		} catch (UserNotFoundException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
 		}
