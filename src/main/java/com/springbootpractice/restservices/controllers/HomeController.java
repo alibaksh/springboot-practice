@@ -12,7 +12,7 @@ public class HomeController {
 	@Value("${server.port}")
 	String inusedPort;
 
-	@GetMapping(path = "/health")
+	@GetMapping(path = "/health/*")
 	public String healthCheck() {
 
 		return "The service is up and running on Port: " + inusedPort;
