@@ -5,6 +5,8 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -32,12 +34,13 @@ import com.springbootpractice.restservices.services.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-
 @RestController
 @Validated
 @RequestMapping("/users")
 @Api(tags = "User management RESTful services", value = "UserController", description = "Controller used for User management")
 public class UserController {
+
+	Logger logger = LogManager.getLogger(UserController.class);
 
 	@Autowired
 	private UserService userService;
@@ -45,6 +48,8 @@ public class UserController {
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Retreive List of users")
 	public List<User> getAllUsers() {
+		logger.info("Fetching all users...", "Log4J");
+		logger.error("Fetching all users...", "Log4J");
 		return userService.getAllUsers();
 	}
 
